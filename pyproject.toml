@@ -17,7 +17,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["pytest>=8", "httpx>=0.27"]
+dev = ["pytest>=8", "httpx>=0.27", "matplotlib>=3.9"]
 
 [project.scripts]
 turbofan-rul = "turbofan_rul.cli:main"

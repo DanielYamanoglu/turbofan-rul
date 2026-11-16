@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 330" width="1000" height="330" role="img" aria-labelledby="t d">
+<title id="t">Pipeline: sensor history to remaining useful life, with drift monitoring and an API</title><desc id="d">Engine sensor history is turned into causal SQL window features in DuckDB, a gradient boosting model predicts remaining useful life and a maintenance alert, and the result is served over FastAPI. Inputs are checked for drift with PSI and runs are tracked in MLflow.</desc>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker><style>
+      text{font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;fill:#0f172a}
+      .h{font-size:15px;font-weight:700}
+      .s{font-size:12px;fill:#334155}
+      .k{font-size:11px;font-weight:700;fill:#64748b;letter-spacing:.08em}
+      .box{fill:#ffffff;stroke:#94a3b8;stroke-width:1.5}
+      .src{fill:#e0f2fe;stroke:#0284c7;stroke-width:1.5}
+      .out{fill:#dcfce7;stroke:#16a34a;stroke-width:1.5}
+      .warn{fill:#fef3c7;stroke:#d97706;stroke-width:1.5}
+      .ln{stroke:#475569;stroke-width:1.6;fill:none}
+      .v{font-size:13px;font-weight:700}
+    </style></defs>
+<rect width="1000" height="330" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+<text class="k" x="30" y="38">DATA</text>
+<rect class="src" x="30" y="54" width="166" height="124" rx="8"/>
+<text class="h" x="44" y="82">Sensor history</text>
+<text class="s" x="44" y="106">NASA C-MAPSS FD001</text>
+<text class="s" x="44" y="124">21 sensors per cycle</text>
+<text class="s" x="44" y="142">100 train, 100 test engines</text>
+<path class="ln" marker-end="url(#a)" d="M198 116.0H221"/>
+<text class="k" x="224" y="38">FEATURES</text>
+<rect class="box" x="224" y="54" width="166" height="124" rx="8"/>
+<text class="h" x="238" y="82">SQL windows</text>
+<text class="s" x="238" y="106">DuckDB, causal windows</text>
+<text class="s" x="238" y="124">rolling mean / std</text>
+<text class="s" x="238" y="142">drift from own baseline</text>
+<path class="ln" marker-end="url(#a)" d="M391 116.0H414"/>
+<text class="k" x="417" y="38">MODEL</text>
+<rect class="box" x="417" y="54" width="166" height="124" rx="8"/>
+<text class="h" x="431" y="82">Gradient boosting</text>
+<text class="s" x="431" y="106">76 features</text>
+<text class="s" x="431" y="124">CV grouped by engine</text>
+<text class="s" x="431" y="142">MLflow run log</text>
+<path class="ln" marker-end="url(#a)" d="M585 116.0H608"/>
+<text class="k" x="611" y="38">SERVE</text>
+<rect class="box" x="611" y="54" width="166" height="124" rx="8"/>
+<text class="h" x="625" y="82">FastAPI + Docker</text>
+<text class="s" x="625" y="106">POST /predict</text>
+<text class="s" x="625" y="124">Pydantic validation</text>
+<text class="s" x="625" y="142">model bundled in image</text>
+<path class="ln" marker-end="url(#a)" d="M778 116.0H801"/>
+<text class="k" x="804" y="38">OUTPUT</text>
+<rect class="out" x="804" y="54" width="166" height="124" rx="8"/>
+<text class="h" x="818" y="82">RUL + alert</text>
+<text class="s" x="818" y="106">cycles remaining</text>
+<text class="s" x="818" y="124">alert at 30 cycles</text>
+<path class="ln" marker-end="url(#a)" d="M306 180V212"/>
+<rect class="warn" x="224" y="216" width="166" height="62" rx="8"/>
+<text class="h" x="238" y="241">Drift check</text>
+<text class="s" x="238" y="261">PSI per sensor vs training data</text>
+</svg>
