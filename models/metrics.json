@@ -1,0 +1,28 @@
+{
+  "subset": "FD001",
+  "train_engines": 100,
+  "train_rows": 20631,
+  "test_engines": 100,
+  "features": 76,
+  "cv_rmse": {
+    "ridge_raw_sensors": 21.6775508488463,
+    "gradient_boosting": 8.923937967666955
+  },
+  "test": {
+    "ridge_raw_sensors": {
+      "rmse": 20.578365627614783,
+      "nasa_score": 1225.4171531863208
+    },
+    "gradient_boosting": {
+      "rmse": 11.235596252005186,
+      "nasa_score": 190.07112350792866,
+      "rmse_uncapped_labels": 12.38640583728375,
+      "alert": {
+        "horizon": 30,
+        "engines_near_failure": 25,
+        "precision": 1.0,
+        "recall": 0.96
+      }
+    }
+  }
+}

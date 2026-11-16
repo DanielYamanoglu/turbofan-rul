@@ -1,0 +1,6 @@
+.venv
+data
+mlflow.db
+mlartifacts
+.git
+tests
