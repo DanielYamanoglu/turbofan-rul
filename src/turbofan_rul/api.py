@@ -39,7 +39,15 @@ app = FastAPI(title="turbofan-rul")
 
 @app.get("/health")
 def health() -> dict:
+    """Liveness: the process answers. Kept free of I/O so a slow disk never gets the pod restarted."""
     return {"status": "ok"}
+
+
+@app.get("/ready")
+def ready() -> dict:
+    """Readiness: the model bundle loads, so traffic only reaches pods that can actually predict."""
+    load_bundle()
+    return {"status": "ready"}
 
 
 @app.post("/predict", response_model=PredictResponse)

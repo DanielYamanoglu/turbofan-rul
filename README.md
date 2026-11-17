@@ -73,6 +73,19 @@ Or the API in a container (the trained model is in `models/`):
 docker build -t turbofan-rul . && docker run -p 8000:8000 turbofan-rul
 ```
 
+### Kubernetes
+
+[`k8s/`](k8s/) runs the same image as a two-replica Deployment behind a ClusterIP Service, with a PodDisruptionBudget:
+
+- **Probes split by purpose.** Liveness hits `/health`, which does no I/O, so a slow disk never restarts a pod. Readiness and startup hit `/ready`, which loads the model bundle, so traffic only reaches pods that can predict.
+- **Zero-downtime rollouts.** `maxUnavailable: 0`, and the disruption budget keeps one replica up through node drains.
+- **Locked-down pods.** Non-root user (uid 10001, set in the Dockerfile), read-only root filesystem with an `emptyDir` for `/tmp`, all capabilities dropped, no privilege escalation, default seccomp profile, no service-account token.
+
+```bash
+kubectl apply -k k8s
+./scripts/k8s_smoke.sh   # builds the image, starts a throwaway kind cluster, calls the service through its Service
+```
+
 ## Project structure
 
 ```
@@ -81,7 +94,9 @@ src/turbofan_rul/features.py  SQL window features, generated per sensor and run 
 src/turbofan_rul/train.py     grouped cross-validation, test scoring, model bundle, MLflow logging
 src/turbofan_rul/metrics.py   RMSE, PHM08 score, alert precision/recall, PSI
 src/turbofan_rul/monitor.py   per-sensor drift report
-src/turbofan_rul/api.py       FastAPI service
+src/turbofan_rul/api.py       FastAPI service (/predict, /health liveness, /ready readiness)
+k8s/                          Deployment, Service, PodDisruptionBudget (kustomize)
+scripts/k8s_smoke.sh          end-to-end check on a kind cluster
 scripts/plot_results.py       README figure
 models/                       trained model and metrics.json
 tests/                        9 tests: causal features, label capping, scoring functions, PSI, API contract

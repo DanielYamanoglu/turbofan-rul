@@ -1,0 +1,10 @@
+# Node drains and upgrades keep at least one replica serving.
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: turbofan-rul
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: turbofan-rul

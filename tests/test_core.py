@@ -94,3 +94,12 @@ def test_api_rejects_empty_or_incomplete_history(monkeypatch):
     client = _client(monkeypatch, 12.0)
     assert client.post("/predict", json={"history": []}).status_code == 422
     assert client.post("/predict", json={"history": [{"cycle": 1, "s2": 1.0}]}).status_code == 422
+
+
+def test_ready_fails_until_the_model_loads(monkeypatch):
+    def missing():
+        raise FileNotFoundError("model.joblib")
+
+    monkeypatch.setattr(api, "load_bundle", missing)
+    assert TestClient(api.app, raise_server_exceptions=False).get("/ready").status_code == 500
+    assert _client(monkeypatch, 12.0).get("/ready").json() == {"status": "ready"}
